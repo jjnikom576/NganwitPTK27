@@ -138,3 +138,32 @@ body{
   .header h1{ font-size:1.8em }
   .highlight-text{ font-size:1em }
 }
+
+/* Header ของหัวข้อ + ปุ่มลิงก์ */
+.section-header{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; flex-wrap:wrap; margin-bottom:16px;
+}
+.section-header h3{ margin:0; }
+
+/* ปุ่มลิงก์ไปชีต */
+.link-btn{
+  display:inline-flex; align-items:center; gap:8px;
+  background:#10b981; color:#fff; text-decoration:none;
+  padding:10px 14px; border-radius:10px; font-weight:700;
+  box-shadow:0 6px 18px rgba(16,185,129,.25);
+  border:1px solid rgba(15,23,42,.06);
+  transition:transform .1s ease, box-shadow .2s ease, background .2s ease;
+}
+.link-btn:hover{ transform:translateY(-1px); box-shadow:0 10px 24px rgba(16,185,129,.33); background:#0ea371; }
+.link-btn:active{ transform:translateY(0); }
+
+.link-btn .icon{
+  width:18px; height:18px; fill:#fff; display:block;
+}
+
+/* บีบปุ่มลงเมื่อจอแคบ */
+@media (max-width:480px){
+  .link-btn{ padding:8px 12px; font-weight:600; }
+  .link-btn .icon{ width:16px; height:16px; }
+}

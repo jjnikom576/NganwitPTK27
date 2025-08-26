@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>งานวิทย์ 27 & เจียระไนเพชรวิชาการ — สรุปการสมัคร</title>
 
   <!-- Fonts & Chart.js -->
@@ -13,6 +14,7 @@
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <!-- Loader (หน้าเต็ม) -->
   <div id="pageLoader" class="loader-overlay" aria-hidden="true">
@@ -79,9 +81,25 @@
 
     <!-- Detailed (ดีไซน์ใหม่) -->
     <section class="detailed-section fancy" aria-label="สรุปรายการสมัครแข่งขันตามกิจกรรมและช่วงชั้น">
-      <h3>📋 สรุปรายการสมัครแข่งขันตามกิจกรรมและช่วงชั้น</h3>
+      <div class="section-header">
+        <h3>📋 สรุปรายการสมัครแข่งขันตามกิจกรรมและช่วงชั้น</h3>
+
+        <!-- ปุ่มลิงก์ไป Google Sheet -->
+        <a id="sheetLink" class="link-btn" href="#" target="_blank" rel="noopener noreferrer"
+          aria-label="เปิด Google Sheet">
+          <!-- ไอคอนสเปรดชีต (SVG เบา ๆ) -->
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2
+        2 0 0 0 2-2V8l-6-6zM14 9V3.5L19.5 9H14zM8 12h8v2H8v-2zm0
+        4h8v2H8v-2zm0-8h4v2H8V8z" />
+          </svg>
+          Link Sheet
+        </a>
+      </div>
+
       <div id="detailedActivities" class="detail-grid"></div>
     </section>
+
 
     <!-- Schools -->
     <section class="top-schools">
@@ -98,4 +116,5 @@
   <noscript>ต้องเปิดใช้งาน JavaScript เพื่อแสดงผลข้อมูล</noscript>
   <script src="app.js" defer></script>
 </body>
+
 </html>

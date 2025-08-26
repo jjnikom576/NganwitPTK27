@@ -1,5 +1,6 @@
 // ===== Config =====
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgvbRGmt1RoMdPU3-tGQuvvljQXo9A-CEWC6SIxddS9wqXMiZfzTlDBFckck8zf0E3/exec';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1YWiVCOdosAo6hlooooD0jX2UYdXL6tr3-d4kbbyFERw';
 
 // ===== State =====
 let competitionChart = null;
@@ -192,6 +193,10 @@ function fetchDataJSONP(){
 
 // ===== Start =====
 window.addEventListener('DOMContentLoaded', ()=>{
+  // set ลิงก์ปุ่มชีต
+  const a = document.getElementById('sheetLink');
+  if (a) a.href = SHEET_URL;
+
   fetchDataJSONP();
-  // ถ้าอยาก auto-refresh: setInterval(fetchDataJSONP, 30000);
+  // setInterval(fetchDataJSONP, 30000); // ถ้าต้อง auto-refresh
 });
