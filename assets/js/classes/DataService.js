@@ -121,37 +121,51 @@ class DataService {
    * @returns {boolean} True if loaded successfully
    */
   loadFromLocalStorage() {
-    try {
-      const cached = localStorage.getItem(CONFIG.CACHE.PERSIST_KEY);
-      const cachedVersion = localStorage.getItem(CONFIG.CACHE.VERSION_KEY);
-      
-      if (!cached || cachedVersion !== CONFIG.APP.VERSION) {
-        console.log('📦 No valid cache found in localStorage');
-        return false;
-      }
-      
-      const data = JSON.parse(cached);
-      
-      // Check if cache is still valid (within timeout)
-      if (!data.lastUpdated || (Date.now() - data.lastUpdated) > this.cacheTimeout) {
-        console.log('⏰ localStorage cache expired');
-        return false;
-      }
-      
-      // Restore global cache
-      GLOBAL_CACHE.competitions = data.competitions;
-      GLOBAL_CACHE.results = new Map(Object.entries(data.results || {}));
-      GLOBAL_CACHE.lastUpdated = data.lastUpdated;
-      GLOBAL_CACHE.isLoaded = true;
-      
-      console.log('✅ Cache loaded from localStorage');
-      return true;
-      
-    } catch (error) {
-      console.warn('Cannot load from localStorage:', error);
+  try {
+    const cached = localStorage.getItem(CONFIG.CACHE.PERSIST_KEY);
+    const cachedVersion = localStorage.getItem(CONFIG.CACHE.VERSION_KEY);
+    
+    if (!cached || cachedVersion !== CONFIG.APP.VERSION) {
+      console.log('📦 No valid cache found in localStorage');
       return false;
     }
+    
+    const data = JSON.parse(cached);
+    
+    // Check if cache is still valid (within timeout)
+    if (!data.lastUpdated || (Date.now() - data.lastUpdated) > this.cacheTimeout) {
+      console.log('⏰ localStorage cache expired');
+      return false;
+    }
+    
+    // Restore global cache
+    GLOBAL_CACHE.competitions = data.competitions;
+    GLOBAL_CACHE.results = new Map(Object.entries(data.results || {}));
+    GLOBAL_CACHE.lastUpdated = data.lastUpdated;
+    GLOBAL_CACHE.isLoaded = true;
+    
+    // Log cache health status
+    const errors = data.competitions?.errors || {};
+    const hasScience = (data.competitions?.science || []).length > 0;
+    const hasGem = (data.competitions?.gem || []).length > 0;
+    
+    if (errors.science || errors.gem) {
+      console.log('⚠️ Cache loaded with some errors:', { 
+        scienceOK: hasScience, 
+        gemOK: hasGem,
+        errors 
+      });
+    } else {
+      console.log('✅ Healthy cache loaded from localStorage');
+    }
+    
+    return true;
+    
+  } catch (error) {
+    console.warn('Cannot load from localStorage:', error);
+    return false;
   }
+}
 
   /**
    * Check if data is available in cache - NEW

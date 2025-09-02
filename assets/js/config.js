@@ -18,8 +18,8 @@ const CONFIG = {
   // ===== API Configuration =====
   API: {
     // Google Apps Script URLs (แยกกัน)
-    SCIENCE_URL: 'https://script.google.com/macros/s/AKfycbxazjoXwpq8JGT-Hix2DYAVTQkwCq7DYhVudi2XzdkE91RoabZBYyaEywYmI0WVxPSKDA/exec',
-    GEM_URL: 'https://script.google.com/macros/s/AKfycbxo45SHsvY2vaAvH6s0O7MEKnhXu-rw-ErOxmFpoqRpH3pVPFL5T3SEZ8U-5OEGxGlAdg/exec',
+    SCIENCE_URL: 'https://script.google.com/macros/s/AKfycbxWyESyMxTu6WmnvF82xkdlEtUKeoacylcqXhBZv6f756BcYdzgosqk23SzkQoLRGP5PQ/exec',
+    GEM_URL: 'https://script.google.com/macros/s/AKfycbwZ2OOojlO_f2CIlIZ9sejLlJWJlN1_7XXP787GT6K7iRN6v2181Hn-_Q4wWFXTN7aHRQ/exec',
     
     // Legacy BASE_URL for backward compatibility
     BASE_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec',

@@ -27,37 +27,44 @@ class CompetitionManager {
    * @returns {Promise<void>}
    */
   async initialize() {
-    try {
-      this.isLoading = true;
+  try {
+    this.isLoading = true;
 
-      // Check if global cache is already loaded and valid
-      if (this.dataService.isCacheReady()) {
-        console.log('🚀 Loading from global cache...');
-        this.loadFromGlobalCache();
-        this.isInitialized = true;
-        return;
-      }
-
-      // Try to load from localStorage first
-      if (this.dataService.loadFromLocalStorage()) {
-        console.log('💾 Loading from localStorage cache...');
-        this.loadFromGlobalCache();
-        this.isInitialized = true;
-        return;
-      }
-
-      // If no cache available, pre-load everything
-      console.log('📡 No cache found, pre-loading all data...');
-      await this.preloadAllData();
+    // Check if global cache is loaded and has NO errors
+    if (this.dataService.isCacheReady() && this.isCacheHealthy()) {
+      console.log('🚀 Loading from healthy global cache...');
+      this.loadFromGlobalCache();
       this.isInitialized = true;
-
-    } catch (error) {
-      Utils.logError('CompetitionManager.initialize', error);
-      throw error;
-    } finally {
-      this.isLoading = false;
+      return;
     }
+
+    // Check localStorage cache health
+    if (this.dataService.loadFromLocalStorage()) {
+      if (this.isCacheHealthy()) {
+        console.log('💾 Loading from healthy localStorage cache...');
+        this.loadFromGlobalCache();
+        this.isInitialized = true;
+        return;
+      } else {
+        console.log('⚠️ Cache has errors, will retry failed APIs...');
+        await this.retryFailedAPIs();
+        this.isInitialized = true;
+        return;
+      }
+    }
+
+    // If no cache available, pre-load everything
+    console.log('📡 No cache found, pre-loading all data...');
+    await this.preloadAllData();
+    this.isInitialized = true;
+
+  } catch (error) {
+    Utils.logError('CompetitionManager.initialize', error);
+    throw error;
+  } finally {
+    this.isLoading = false;
   }
+}
 
   /**
    * Pre-load all data using DataService - NEW
@@ -623,9 +630,106 @@ class CompetitionManager {
       }
     };
   }
+
+  /**
+ * Check if cache is healthy (no critical errors) - NEW
+ * @returns {boolean} True if cache has usable data
+ */
+isCacheHealthy() {
+  if (!GLOBAL_CACHE.isLoaded || !GLOBAL_CACHE.competitions) {
+    return false;
+  }
+
+  const errors = GLOBAL_CACHE.competitions.errors || {};
+  const hasScience = (GLOBAL_CACHE.competitions.science || []).length > 0;
+  const hasGem = (GLOBAL_CACHE.competitions.gem || []).length > 0;
+
+  // Cache is healthy if:
+  // 1. At least one category loaded successfully, OR
+  // 2. Both categories failed but we have some old data
+  return hasScience || hasGem;
+}
+
+/**
+ * Retry only the failed APIs - NEW  
+ * @returns {Promise<void>}
+ */
+async retryFailedAPIs() {
+  try {
+    const errors = GLOBAL_CACHE.competitions.errors || {};
+    const hasScience = (GLOBAL_CACHE.competitions.science || []).length > 0;
+    const hasGem = (GLOBAL_CACHE.competitions.gem || []).length > 0;
+
+    const retryPromises = [];
+
+    // Retry science API if it failed and we have no science data
+    if (errors.science && !hasScience) {
+      console.log('🔄 Retrying science API...');
+      retryPromises.push(
+        this.dataService.fetchScienceCompetitions()
+          .then(data => ({ type: 'science', data, success: true }))
+          .catch(error => ({ type: 'science', error, success: false }))
+      );
+    }
+
+    // Retry gem API if it failed and we have no gem data  
+    if (errors.gem && !hasGem) {
+      console.log('🔄 Retrying gem API...');
+      retryPromises.push(
+        this.dataService.fetchGemCompetitions()
+          .then(data => ({ type: 'gem', data, success: true }))
+          .catch(error => ({ type: 'gem', error, success: false }))
+      );
+    }
+
+    if (retryPromises.length === 0) {
+      console.log('✅ No failed APIs to retry');
+      this.loadFromGlobalCache();
+      return;
+    }
+
+    // Execute retries
+    const results = await Promise.allSettled(retryPromises);
+    
+    // Update global cache with successful retries
+    let updated = false;
+    results.forEach(result => {
+      if (result.status === 'fulfilled' && result.value.success) {
+        const { type, data } = result.value;
+        if (type === 'science') {
+          GLOBAL_CACHE.competitions.science = data;
+          GLOBAL_CACHE.competitions.errors.science = null;
+          updated = true;
+          console.log('✅ Science API retry successful');
+        } else if (type === 'gem') {
+          GLOBAL_CACHE.competitions.gem = data;
+          GLOBAL_CACHE.competitions.errors.gem = null;
+          updated = true;
+          console.log('✅ Gem API retry successful');
+        }
+      }
+    });
+
+    if (updated) {
+      // Update timestamp and save to localStorage
+      GLOBAL_CACHE.lastUpdated = Date.now();
+      this.dataService.saveToLocalStorage();
+    }
+
+    // Load from updated cache
+    this.loadFromGlobalCache();
+
+  } catch (error) {
+    Utils.logError('CompetitionManager.retryFailedAPIs', error);
+    // Fallback to existing cache even if retry failed
+    this.loadFromGlobalCache();
+  }
+}
+
 }
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = CompetitionManager;
 }
+
