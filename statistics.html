@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="สถิติการสมัครงานวิทย์ 27 และกิจกรรมเจียระไนเพชรวิชาการ">
+  <meta name="keywords" content="สถิติการสมัคร, งานวิทย์, เจียระไนเพชรวิชาการ, โรงเรียน, ข้อมูล">
+  <meta name="author" content="NganwitPTK27">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="สถิติการสมัคร - งานวิทย์ 27">
+  <meta property="og:description" content="สถิติและข้อมูลการสมัครเข้าร่วมงานวิทย์ 27 และกิจกรรมเจียระไนเพชรวิชาการ">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/logo.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
+
+  <!-- Fonts & Chart.js -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js - Load without defer to ensure it's available -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/statistics.css">
+
+  <title>สถิติการสมัคร - งานวิทย์ 27 และ เจียระไนเพชรวิชาการ</title>
+</head>
+<body>
+  <!-- Loader (หน้าเต็ม) -->
+  <div id="pageLoader" class="loader-overlay" aria-hidden="true">
+    <div class="loader">
+      <div class="spinner"></div>
+      <div class="loader-text">กำลังโหลดข้อมูล รอสักครู่…</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Header with Back Button -->
+    <header class="header">
+      <a href="index.html" class="back-button" aria-label="กลับไปหน้าแรก">
+        <span aria-hidden="true">←</span>
+        <span>กลับหน้าแรก</span>
+      </a>
+      
+      <h1>งานวิทย์ 27 และ กิจกรรมเจียระไนเพชรวิชาการ</h1>
+      <p>สรุปข้อมูลการสมัครแข่งขัน</p>
+    </header>
+
+    <!-- Stats -->
+    <section class="stats-grid" aria-label="สรุปตัวเลข">
+      <div class="stat-card pulse">
+        <div class="stat-number" id="schoolCount">-</div>
+        <div class="stat-label">โรงเรียนเข้าร่วม</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="totalEntries">-</div>
+        <div class="stat-label">รายการสมัครทั้งหมด</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2</div>
+        <div class="stat-label">ประเภทการแข่งขัน</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="activityCount">-</div>
+        <div class="stat-label">กิจกรรมการแข่งขัน</div>
+      </div>
+    </section>
+
+    <!-- Highlight -->
+    <section class="highlight-box">
+      <div class="highlight-text" id="highlightInfo">กำลังวิเคราะห์ข้อมูล...</div>
+    </section>
+
+    <!-- Charts -->
+    <section class="charts-section" aria-label="แผนภูมิ">
+      <div class="chart-container">
+        <div class="chart-title">สัดส่วนกิจกรรมการแข่งขัน</div>
+        <div class="chart-canvas"><canvas id="competitionChart"></canvas></div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">การกระจายตามระดับชั้น</div>
+        <div class="chart-canvas"><canvas id="levelChart"></canvas></div>
+      </div>
+    </section>
+
+    <!-- Activities -->
+    <section class="activities-grid" aria-label="กิจกรรมตามกลุ่ม">
+      <div class="activity-section">
+        <div class="section-title">กลุ่มสาระวิทยาศาสตร์และเทคโนโลยี</div>
+        <div id="scienceActivities"></div>
+      </div>
+      <div class="activity-section">
+        <div class="section-title">กิจกรรมเจียระไนเพชรวิชาการ</div>
+        <div id="academicActivities"></div>
+      </div>
+    </section>
+
+    <!-- Detailed -->
+    <section class="detailed-section fancy" aria-label="รายละเอียดกิจกรรมการแข่งขันทั้งหมด">
+      <h3>📋 รายละเอียดกิจกรรมการแข่งขันทั้งหมด</h3>
+      <div id="detailedActivities" class="detail-grid"></div>
+    </section>
+
+    <!-- Schools -->
+    <section class="top-schools">
+      <h3>🏫 โรงเรียนที่สมัครมากที่สุด</h3>
+      <div id="topSchools"></div>
+    </section>
+
+    <section class="top-schools alt">
+      <h3>📋 รายชื่อโรงเรียนทั้งหมด (<span id="allSchoolCount">-</span> แห่ง)</h3>
+      <div id="allSchools" class="all-schools-grid"></div>
+    </section>
+  </div>
+
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link" accesskey="s">ข้ามไปยังเนื้อหาหลัก</a>
+
+  <noscript>ต้องเปิดใช้งาน JavaScript เพื่อแสดงผลข้อมูล</noscript>
+
+  <!-- Statistics Script -->
+  <script src="assets/js/statistics.js" defer></script>
+
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "สถิติการสมัครงานวิทย์ 27 และกิจกรรมเจียระไนเพชรวิชาการ",
+    "description": "ข้อมูลสถิติการสมัครเข้าร่วมการแข่งขันในงานวิทย์ครั้งที่ 27 และกิจกรรมเจียระไนเพชรวิชาการ",
+    "creator": {
+      "@type": "Organization",
+      "name": "NganwitPTK27"
+    }
+  }
+  </script>
+
+</body>
+</html>

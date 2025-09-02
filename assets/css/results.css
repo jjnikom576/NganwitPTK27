@@ -1,0 +1,493 @@
+/* ===== Results Page Styles ===== */
+
+/* ===== Base ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--gradient-primary);
+  min-height: 100vh;
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+}
+
+/* ===== Layout Container ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-8) var(--spacing-6);
+  background: var(--gradient-glass);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-2xl);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== Header Section ===== */
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-10);
+  padding-bottom: var(--spacing-6);
+  border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  background: var(--color-white);
+  color: var(--color-primary);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  box-shadow: var(--shadow-base);
+  transition: all var(--duration-normal) var(--ease-out);
+  margin-bottom: var(--spacing-6);
+  border: 1px solid var(--color-gray-200);
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: var(--color-gray-50);
+}
+
+.competition-title {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--spacing-4);
+}
+
+.competition-info {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-6);
+  flex-wrap: wrap;
+}
+
+.info-badge {
+  background: var(--color-white);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border: 1px solid var(--color-gray-300);
+  box-shadow: var(--shadow-sm);
+}
+
+.info-badge.level {
+  background: var(--gradient-cool);
+  color: var(--color-white);
+  border: none;
+}
+
+.info-badge.category {
+  background: var(--gradient-warm);
+  color: var(--color-white);
+  border: none;
+}
+
+/* ===== Results Table ===== */
+.results-section {
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-8);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-gray-200);
+  overflow: hidden;
+}
+
+.results-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-6);
+  text-align: center;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-base);
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.results-table thead {
+  background: var(--gradient-primary);
+  color: var(--color-white);
+}
+
+.results-table th {
+  padding: var(--spacing-4) var(--spacing-3);
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.results-table tbody tr {
+  border-bottom: 1px solid var(--color-gray-200);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.results-table tbody tr:hover {
+  background: var(--color-gray-50);
+}
+
+.results-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.results-table td {
+  padding: var(--spacing-4) var(--spacing-3);
+  vertical-align: top;
+  font-size: var(--font-size-sm);
+}
+
+/* ===== Award Styling ===== */
+.award-cell {
+  font-weight: var(--font-weight-semibold);
+  position: relative;
+}
+
+.award-cell.champion {
+  color: #d4af37;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+}
+
+.award-cell.first-runner {
+  color: #c0c0c0;
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(192, 192, 192, 0.05));
+}
+
+.award-cell.second-runner {
+  color: #cd7f32;
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.1), rgba(205, 127, 50, 0.05));
+}
+
+.award-cell.honorable {
+  color: var(--color-info);
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
+}
+
+.award-cell.participant {
+  color: var(--color-text-muted);
+  background: var(--color-gray-50);
+}
+
+/* ===== Level Column ===== */
+.level-cell {
+  text-align: center;
+  width: 120px;
+}
+
+.level-badge {
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  color: var(--color-white);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  display: inline-block;
+  min-width: 80px;
+}
+
+/* ===== Type Column ===== */
+.type-cell {
+  text-align: center;
+  width: 100px;
+}
+
+.type-badge {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: var(--color-white);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  display: inline-block;
+  min-width: 60px;
+}
+
+/* ===== Award Column Updates ===== */
+.award-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  justify-content: flex-start;
+}
+
+/* ===== Placeholder Text ===== */
+.placeholder-text {
+  color: var(--color-text-muted);
+  font-style: italic;
+  font-size: var(--font-size-sm);
+  opacity: 0.7;
+}
+
+/* ===== Mobile Responsive Updates ===== */
+.rank-cell {
+  text-align: center;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  background: var(--color-gray-50);
+  width: 60px;
+}
+
+/* ===== School Column ===== */
+.school-cell {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+/* ===== Participants Column ===== */
+.participants-cell {
+  max-width: 200px;
+}
+
+.participant-name {
+  display: block;
+  margin-bottom: var(--spacing-1);
+  color: var(--color-text-secondary);
+}
+
+.participant-name:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== Coach Column ===== */
+.coach-cell {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* ===== Certificate Column ===== */
+.certificate-cell {
+  text-align: center;
+  width: 120px;
+}
+
+.certificate-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  background: var(--gradient-accent);
+  color: var(--color-white);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-base);
+  text-decoration: none;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--duration-normal) var(--ease-out);
+  box-shadow: var(--shadow-sm);
+}
+
+.certificate-link:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.certificate-link.disabled {
+  background: var(--color-gray-400);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.certificate-link.disabled:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== Summary Section ===== */
+.summary-section {
+  margin-top: var(--spacing-8);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.summary-card {
+  background: var(--color-white);
+  padding: var(--spacing-4);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  box-shadow: var(--shadow-base);
+  border: 1px solid var(--color-gray-200);
+}
+
+.summary-number {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  display: block;
+}
+
+.summary-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-1);
+}
+
+/* ===== Loading State ===== */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.loading .results-table tbody tr {
+  background: linear-gradient(90deg, var(--color-gray-100) 25%, var(--color-gray-200) 50%, var(--color-gray-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ===== Error State ===== */
+.error-message {
+  text-align: center;
+  padding: var(--spacing-12);
+  color: var(--color-error);
+  background: rgba(231, 76, 60, 0.1);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.error-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-4);
+}
+
+.error-description {
+  color: var(--color-text-muted);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+  .container {
+    padding: var(--spacing-6) var(--spacing-5);
+  }
+  
+  .competition-title {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-5) var(--spacing-4);
+  }
+  
+  .competition-title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .competition-info {
+    gap: var(--spacing-3);
+  }
+  
+  .results-table th,
+  .results-table td {
+    padding: var(--spacing-3) var(--spacing-2);
+    font-size: var(--font-size-xs);
+  }
+  
+  .participants-cell {
+    max-width: 150px;
+  }
+  
+  .certificate-link {
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-1) var(--spacing-2);
+  }
+}
+
+@media (max-width: 640px) {
+  .results-table {
+    font-size: var(--font-size-xs);
+  }
+  
+  /* Hide level, type, participants, and coach columns on mobile */
+  .results-table th:nth-child(2),
+  .results-table td:nth-child(2),
+  .results-table th:nth-child(3),
+  .results-table td:nth-child(3),
+  .results-table th:nth-child(6),
+  .results-table td:nth-child(6),
+  .results-table th:nth-child(7),
+  .results-table td:nth-child(7) {
+    display: none;
+  }
+  
+  .table-note {
+    margin-top: var(--spacing-4);
+    padding: var(--spacing-3);
+    background: var(--color-gray-50);
+    border-radius: var(--radius-base);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+}
+
+
+/* แถวหัวกลุ่มช่วงชั้น */
+.results-table .group-row .group-header{
+  background: #eef2ff;
+  color: #1e293b;
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 12px;
+  border-top: 2px solid #94a3b8;
+  border-bottom: 2px solid #c7d2fe;
+}
+/* เส้นคั่นชัดขึ้นระหว่างกลุ่ม */
+.results-table tr.group-row + tr td{
+  border-top: 2px solid #c7d2fe;
+}
+
+.results-table tr.level-break td{ border-top:3px solid #94a3b8; }
+
+.results-table tr.level-divider td {
+  border-top: 3px solid #333; /* เส้นแบ่งเข้ม */
+}
+
+/* === Override: Summary total card === */
+.summary-section .summary-card.total {
+  background: var(--color-white) !important;   /* ตัด gradient/global background */
+  background-image: none !important;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-gray-200);
+  box-shadow: var(--shadow-base);
+}
+
+/* เลข “6” ให้เป็นสีแบรนด์แทนพื้นหลังม่วง */
+.summary-section .summary-card.total .summary-number {
+  color: var(--color-primary);
+}
+
+/* ป้ายข้อความด้านล่าง */
+.summary-section .summary-card.total .summary-label {
+  color: var(--color-text-muted);
+}
+
+
