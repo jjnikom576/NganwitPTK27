@@ -358,3 +358,34 @@ body {
     font-size: var(--font-size-xl);
   }
 }
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* เว้นระยะห่าง */
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.logo {
+  height: 60px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo-left:hover,
+.logo-right:hover {
+  transform: scale(1.1) rotate(2deg);
+}
+
+/* Animation เบา ๆ เวลาโหลด */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
