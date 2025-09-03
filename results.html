@@ -50,7 +50,7 @@
         <span>กลับหน้าแรก</span>
       </a>
 
-      <!-- Refresh Button - NEW (เหมือน index.html) -->
+      <!-- Refresh Button -->
       <button onclick="clearCacheAndReload()" class="refresh-cache-button" title="รีเฟรชข้อมูลทั้งหมด" aria-label="รีเฟรชข้อมูลทั้งหมด">
         <span>🔄</span>
         <span>รีเฟรชข้อมูล</span>
@@ -79,7 +79,12 @@
         </div>
       </div>
 
-      <!-- Mobile Note -->
+      <!-- Mobile Scroll Hint -->
+      <div class="mobile-scroll-hint">
+        💡 <strong>เทคนิค:</strong> ลากตารางซ้าย-ขวาเพื่อดูข้อมูลทั้งหมด หรือใช้ Shift + Mouse Wheel
+      </div>
+
+      <!-- Old Mobile Note (will be hidden) -->
       <div class="table-note" style="display: none;">
         <strong>หมายเหตุ:</strong> บนหน้าจอมือถือ จะแสดงเฉพาะข้อมูลสำคัญเท่านั้น 
         กรุณาใช้อุปกรณ์หน้าจอใหญ่เพื่อดูข้อมูลครบถ้วน
@@ -120,9 +125,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: var(--z-modal);
+      z-index: var(--z-modal, 1000);
       opacity: 1;
-      transition: opacity var(--duration-normal) var(--ease-out);
+      transition: opacity var(--duration-normal, 0.25s) var(--ease-out, ease);
     }
 
     .loader-overlay.fade-out {
@@ -134,20 +139,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--spacing-4);
-      background: var(--color-white);
-      padding: var(--spacing-8) var(--spacing-6);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-xl);
-      border: 1px solid var(--color-gray-200);
+      gap: var(--spacing-4, 1rem);
+      background: var(--color-white, #ffffff);
+      padding: var(--spacing-8, 2rem) var(--spacing-6, 1.5rem);
+      border-radius: var(--radius-xl, 1rem);
+      box-shadow: var(--shadow-xl, 0 20px 25px rgba(0,0,0,0.1));
+      border: 1px solid var(--color-gray-200, #e5e7eb);
     }
 
     .spinner {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      border: 4px solid var(--color-gray-300);
-      border-top-color: var(--color-primary);
+      border: 4px solid var(--color-gray-300, #d1d5db);
+      border-top-color: var(--color-primary, #667eea);
       animation: spin 1s linear infinite;
     }
 
@@ -156,18 +161,18 @@
     }
 
     .loader-text {
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold, 600);
+      color: var(--color-text-primary, #2c3e50);
       text-align: center;
     }
 
-    /* Refresh Button - เหมือน index.html */
+    /* Refresh Button Styles */
     .refresh-cache-button {
       position: absolute;
       top: 1rem;
       right: 1rem;
       padding: 0.5rem 1rem;
-      background: var(--color-primary);
+      background: var(--color-primary, #667eea);
       color: white;
       border: none;
       border-radius: 0.5rem;
@@ -179,12 +184,13 @@
       gap: 0.5rem;
       z-index: 10;
       transition: all 0.2s;
+      font-family: inherit;
     }
 
     .refresh-cache-button:hover {
-      background: var(--color-primary-dark, #2563eb);
+      background: var(--color-primary-dark, #5a6fd8);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
     }
 
     .refresh-cache-button:active {
@@ -196,13 +202,13 @@
       position: absolute;
       top: -40px;
       left: 6px;
-      background: var(--color-primary);
-      color: var(--color-white);
+      background: var(--color-primary, #667eea);
+      color: var(--color-white, #ffffff);
       padding: 8px;
       text-decoration: none;
-      border-radius: var(--radius-base);
-      z-index: var(--z-tooltip);
-      font-weight: var(--font-weight-semibold);
+      border-radius: var(--radius-base, 0.375rem);
+      z-index: var(--z-tooltip, 1070);
+      font-weight: var(--font-weight-semibold, 600);
     }
 
     .skip-link:focus {
@@ -212,16 +218,16 @@
     /* Loading Placeholder */
     .loading-placeholder {
       text-align: center;
-      padding: var(--spacing-12) var(--spacing-4);
-      color: var(--color-text-muted);
-      background: var(--color-gray-50);
-      border-radius: var(--radius-lg);
-      border: 2px dashed var(--color-gray-300);
+      padding: var(--spacing-12, 3rem) var(--spacing-4, 1rem);
+      color: var(--color-text-muted, #6c757d);
+      background: var(--color-gray-50, #f8f9fa);
+      border-radius: var(--radius-lg, 0.75rem);
+      border: 2px dashed var(--color-gray-300, #dee2e6);
     }
 
     .loading-text {
-      font-size: var(--font-size-lg);
-      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-lg, 1.125rem);
+      font-weight: var(--font-weight-medium, 500);
     }
 
     /* Screen reader only */
@@ -240,14 +246,14 @@
     /* Click feedback */
     .clicked {
       transform: scale(0.95);
-      transition: transform var(--duration-fast);
+      transition: transform var(--duration-fast, 0.15s);
     }
 
     /* Badge styling enhancements */
     .info-badge {
       display: inline-flex;
       align-items: center;
-      gap: var(--spacing-2);
+      gap: var(--spacing-2, 0.5rem);
     }
 
     .badge-icon {
@@ -255,14 +261,14 @@
     }
 
     .badge-text {
-      font-weight: var(--font-weight-medium);
+      font-weight: var(--font-weight-medium, 500);
     }
 
     /* Award cell enhancements */
     .award-cell {
       display: flex;
       align-items: center;
-      gap: var(--spacing-2);
+      gap: var(--spacing-2, 0.5rem);
     }
 
     .award-icon {
@@ -271,14 +277,14 @@
     }
 
     .award-text {
-      font-weight: var(--font-weight-semibold);
+      font-weight: var(--font-weight-semibold, 600);
     }
 
     /* Certificate link enhancements */
     .certificate-link {
       display: inline-flex;
       align-items: center;
-      gap: var(--spacing-1);
+      gap: var(--spacing-1, 0.25rem);
     }
 
     .certificate-icon {
@@ -286,23 +292,23 @@
     }
 
     .certificate-text {
-      font-size: var(--font-size-xs);
+      font-size: var(--font-size-xs, 0.75rem);
     }
 
     /* Summary card enhancements */
     .summary-card {
       text-align: center;
-      transition: all var(--duration-normal) var(--ease-out);
+      transition: all var(--duration-normal, 0.25s) var(--ease-out, ease);
     }
 
     .summary-card:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-lg, 0 10px 15px rgba(0,0,0,0.1));
     }
 
     .summary-card.total {
-      background: var(--gradient-primary);
-      color: var(--color-white);
+      background: var(--gradient-primary, linear-gradient(135deg, #667eea, #764ba2));
+      color: var(--color-white, #ffffff);
     }
 
     .summary-card.award-summary.champion {
@@ -324,40 +330,40 @@
     /* Error styling enhancements */
     .error-message {
       text-align: center;
-      padding: var(--spacing-8);
+      padding: var(--spacing-8, 2rem);
     }
 
     .error-icon {
       font-size: 3rem;
-      margin-bottom: var(--spacing-4);
+      margin-bottom: var(--spacing-4, 1rem);
     }
 
     .error-title {
-      font-size: var(--font-size-xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--color-error);
-      margin-bottom: var(--spacing-2);
+      font-size: var(--font-size-xl, 1.25rem);
+      font-weight: var(--font-weight-bold, 700);
+      color: var(--color-error, #e74c3c);
+      margin-bottom: var(--spacing-2, 0.5rem);
     }
 
     .error-description {
-      color: var(--color-text-muted);
-      margin-bottom: var(--spacing-6);
+      color: var(--color-text-muted, #6c757d);
+      margin-bottom: var(--spacing-6, 1.5rem);
     }
 
     .retry-button,
     .back-link {
       display: inline-block;
-      margin: var(--spacing-2);
-      padding: var(--spacing-3) var(--spacing-5);
-      border-radius: var(--radius-lg);
-      font-weight: var(--font-weight-semibold);
+      margin: var(--spacing-2, 0.5rem);
+      padding: var(--spacing-3, 0.75rem) var(--spacing-5, 1.25rem);
+      border-radius: var(--radius-lg, 0.75rem);
+      font-weight: var(--font-weight-semibold, 600);
       text-decoration: none;
-      transition: all var(--duration-normal) var(--ease-out);
+      transition: all var(--duration-normal, 0.25s) var(--ease-out, ease);
     }
 
     .retry-button {
-      background: var(--color-error);
-      color: var(--color-white);
+      background: var(--color-error, #e74c3c);
+      color: var(--color-white, #ffffff);
       border: none;
       cursor: pointer;
     }
@@ -365,46 +371,46 @@
     .retry-button:hover {
       background: #c0392b;
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
     }
 
     .back-link {
-      background: var(--color-gray-100);
-      color: var(--color-text-primary);
-      border: 1px solid var(--color-gray-300);
+      background: var(--color-gray-100, #f1f3f4);
+      color: var(--color-text-primary, #2c3e50);
+      border: 1px solid var(--color-gray-300, #dee2e6);
     }
 
     .back-link:hover {
-      background: var(--color-gray-200);
+      background: var(--color-gray-200, #e9ecef);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,0.05));
     }
 
     /* Empty state styling */
     .empty-state {
       text-align: center;
-      padding: var(--spacing-12) var(--spacing-6);
-      background: var(--color-gray-50);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--color-gray-200);
+      padding: var(--spacing-12, 3rem) var(--spacing-6, 1.5rem);
+      background: var(--color-gray-50, #f8f9fa);
+      border-radius: var(--radius-lg, 0.75rem);
+      border: 1px solid var(--color-gray-200, #e9ecef);
     }
 
     .empty-icon {
       font-size: 4rem;
-      margin-bottom: var(--spacing-4);
+      margin-bottom: var(--spacing-4, 1rem);
       opacity: 0.5;
     }
 
     .empty-title {
-      font-size: var(--font-size-xl);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-primary);
-      margin-bottom: var(--spacing-2);
+      font-size: var(--font-size-xl, 1.25rem);
+      font-weight: var(--font-weight-semibold, 600);
+      color: var(--color-text-primary, #2c3e50);
+      margin-bottom: var(--spacing-2, 0.5rem);
     }
 
     .empty-description {
-      color: var(--color-text-muted);
-      margin-bottom: var(--spacing-6);
+      color: var(--color-text-muted, #6c757d);
+      margin-bottom: var(--spacing-6, 1.5rem);
       max-width: 400px;
       margin-left: auto;
       margin-right: auto;
@@ -413,26 +419,12 @@
     /* Responsive enhancements */
     @media (max-width: 640px) {
       .table-note {
-        display: block !important;
-        margin-top: var(--spacing-4);
-        padding: var(--spacing-3);
-        background: var(--color-amber-50);
-        border-radius: var(--radius-base);
-        font-size: var(--font-size-xs);
-        color: var(--color-amber-800);
-        text-align: center;
-        border: 1px solid var(--color-amber-200);
-      }
-
-      /* Hide less important columns on mobile */
-      .results-table th:nth-child(n+5),
-      .results-table td:nth-child(n+5) {
-        display: none;
+        display: none !important;
       }
 
       .competition-info {
         flex-direction: column;
-        gap: var(--spacing-2);
+        gap: var(--spacing-2, 0.5rem);
       }
 
       .info-badge {

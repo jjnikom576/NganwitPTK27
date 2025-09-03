@@ -117,6 +117,27 @@ body {
   overflow-x: auto;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-base);
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar styling */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
 }
 
 .results-table {
@@ -125,6 +146,7 @@ body {
   background: var(--color-white);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  min-width: 800px;
 }
 
 .results-table thead {
@@ -140,6 +162,16 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
+/* Set minimum widths for each column */
+.results-table th:nth-child(1) { min-width: 60px; } /* Rank */
+.results-table th:nth-child(2) { min-width: 120px; } /* Level */
+.results-table th:nth-child(3) { min-width: 100px; } /* Type */
+.results-table th:nth-child(4) { min-width: 150px; } /* Award */
+.results-table th:nth-child(5) { min-width: 180px; } /* School */
+.results-table th:nth-child(6) { min-width: 120px; } /* Participants */
+.results-table th:nth-child(7) { min-width: 120px; } /* Coach */
+.results-table th:nth-child(8) { min-width: 100px; } /* Certificate */
 
 .results-table tbody tr {
   border-bottom: 1px solid var(--color-gray-200);
@@ -158,6 +190,9 @@ body {
   padding: var(--spacing-4) var(--spacing-3);
   vertical-align: top;
   font-size: var(--font-size-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ===== Award Styling ===== */
@@ -381,6 +416,60 @@ body {
   color: var(--color-text-muted);
 }
 
+/* ===== Group Headers ===== */
+.results-table .group-row .group-header {
+  background: #eef2ff;
+  color: #1e293b;
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 12px;
+  border-top: 2px solid #94a3b8;
+  border-bottom: 2px solid #c7d2fe;
+}
+
+.results-table tr.group-row + tr td {
+  border-top: 2px solid #c7d2fe;
+}
+
+.results-table tr.level-break td {
+  border-top: 3px solid #94a3b8;
+}
+
+.results-table tr.level-divider td {
+  border-top: 3px solid #333;
+}
+
+/* ===== Summary Card Override ===== */
+.summary-section .summary-card.total {
+  background: var(--color-white) !important;
+  background-image: none !important;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-gray-200);
+  box-shadow: var(--shadow-base);
+}
+
+.summary-section .summary-card.total .summary-number {
+  color: var(--color-primary);
+}
+
+.summary-section .summary-card.total .summary-label {
+  color: var(--color-text-muted);
+}
+
+/* ===== Mobile Scroll Hint ===== */
+.mobile-scroll-hint {
+  display: none;
+  text-align: center;
+  margin-top: var(--spacing-4);
+  padding: var(--spacing-3);
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-xs);
+  color: #92400e;
+  font-weight: var(--font-weight-medium);
+}
+
 /* ===== Responsive Design ===== */
 @media (max-width: 1024px) {
   .container {
@@ -407,87 +496,70 @@ body {
   
   .results-table th,
   .results-table td {
-    padding: var(--spacing-3) var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-2);
     font-size: var(--font-size-xs);
   }
   
-  .participants-cell {
-    max-width: 150px;
+  .results-table th {
+    font-size: 0.75rem;
+  }
+  
+  /* Adjust minimum widths for mobile - keep all columns */
+  .results-table th:nth-child(1) { min-width: 50px; }
+  .results-table th:nth-child(2) { min-width: 100px; }
+  .results-table th:nth-child(3) { min-width: 80px; }
+  .results-table th:nth-child(4) { min-width: 120px; }
+  .results-table th:nth-child(5) { min-width: 150px; }
+  .results-table th:nth-child(6) { min-width: 100px; }
+  .results-table th:nth-child(7) { min-width: 100px; }
+  .results-table th:nth-child(8) { min-width: 80px; }
+  
+  /* Reduce minimum table width for mobile */
+  .results-table {
+    min-width: 700px;
+  }
+  
+  .level-badge,
+  .type-badge {
+    font-size: 0.7rem;
+    padding: var(--spacing-1) 6px;
   }
   
   .certificate-link {
-    font-size: var(--font-size-xs);
-    padding: var(--spacing-1) var(--spacing-2);
+    font-size: 0.7rem;
+    padding: var(--spacing-1) 6px;
+  }
+  
+  /* Show mobile scroll hint */
+  .mobile-scroll-hint {
+    display: block;
+  }
+  
+  /* Hide old table note */
+  .table-note {
+    display: none !important;
   }
 }
 
 @media (max-width: 640px) {
   .results-table {
     font-size: var(--font-size-xs);
+    min-width: 650px;
   }
   
-  /* Hide level, type, participants, and coach columns on mobile */
-  .results-table th:nth-child(2),
-  .results-table td:nth-child(2),
-  .results-table th:nth-child(3),
-  .results-table td:nth-child(3),
-  .results-table th:nth-child(6),
-  .results-table td:nth-child(6),
-  .results-table th:nth-child(7),
-  .results-table td:nth-child(7) {
-    display: none;
+  .results-table th,
+  .results-table td {
+    padding: 6px 4px;
+    font-size: 0.75rem;
   }
   
-  .table-note {
-    margin-top: var(--spacing-4);
-    padding: var(--spacing-3);
-    background: var(--color-gray-50);
-    border-radius: var(--radius-base);
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
-    text-align: center;
-  }
+  /* Further reduce column widths for very small screens */
+  .results-table th:nth-child(1) { min-width: 45px; }
+  .results-table th:nth-child(2) { min-width: 90px; }
+  .results-table th:nth-child(3) { min-width: 70px; }
+  .results-table th:nth-child(4) { min-width: 110px; }
+  .results-table th:nth-child(5) { min-width: 130px; }
+  .results-table th:nth-child(6) { min-width: 90px; }
+  .results-table th:nth-child(7) { min-width: 90px; }
+  .results-table th:nth-child(8) { min-width: 70px; }
 }
-
-
-/* แถวหัวกลุ่มช่วงชั้น */
-.results-table .group-row .group-header{
-  background: #eef2ff;
-  color: #1e293b;
-  font-weight: 700;
-  text-align: left;
-  padding: 10px 12px;
-  border-top: 2px solid #94a3b8;
-  border-bottom: 2px solid #c7d2fe;
-}
-/* เส้นคั่นชัดขึ้นระหว่างกลุ่ม */
-.results-table tr.group-row + tr td{
-  border-top: 2px solid #c7d2fe;
-}
-
-.results-table tr.level-break td{ border-top:3px solid #94a3b8; }
-
-.results-table tr.level-divider td {
-  border-top: 3px solid #333; /* เส้นแบ่งเข้ม */
-}
-
-/* === Override: Summary total card === */
-.summary-section .summary-card.total {
-  background: var(--color-white) !important;   /* ตัด gradient/global background */
-  background-image: none !important;
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-gray-200);
-  box-shadow: var(--shadow-base);
-}
-
-/* เลข “6” ให้เป็นสีแบรนด์แทนพื้นหลังม่วง */
-.summary-section .summary-card.total .summary-number {
-  color: var(--color-primary);
-}
-
-/* ป้ายข้อความด้านล่าง */
-.summary-section .summary-card.total .summary-label {
-  color: var(--color-text-muted);
-}
-
-
