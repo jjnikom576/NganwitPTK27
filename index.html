@@ -32,10 +32,10 @@
 </head>
 <body>
   <!-- Loading Overlay -->
-  <div id="loading-overlay" class="loader-overlay" aria-hidden="true">
+  <div id="loading-overlay" class="loader-overlay" aria-hidden="true" style="display:none;">
     <div class="loader">
       <div class="spinner"></div>
-      <div class="loader-text">กำลังโหลดข้อมูล รอสักครู่…</div>
+      <div class="loader-text"></div>
     </div>
   </div>
 
@@ -155,7 +155,8 @@
       inset: 0;
       background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(4px);
-      display: flex;
+      /* default hidden; will be shown by JS when needed */
+      display: none;
       align-items: center;
       justify-content: center;
       z-index: var(--z-modal);

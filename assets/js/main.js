@@ -10,6 +10,8 @@ class MainApp {
     this.competitionManager = new CompetitionManager();
     this.isInitialized = false;
     this.elements = {};
+    // suppress skeleton/loader when returning from BFCache (back/forward)
+    this._suppressLoaders = false;
   }
 
   /**
@@ -116,6 +118,34 @@ async init() {
       this.hideInitialLoading();
     });
 
+    // Handle BFCache/page restore (Back/Forward)
+    window.addEventListener('pageshow', (event) => {
+      const navEntry = (performance.getEntriesByType('navigation') || [])[0];
+      const isBackForward = event.persisted || navEntry?.type === 'back_forward';
+      if (!isBackForward) return;
+
+      // prevent loaders/skeleton on BFCache restore
+      this._suppressLoaders = true;
+
+      try {
+        // hydrate from localStorage immediately and render without skeleton
+        if (this.competitionManager?.dataService?.loadFromLocalStorage()) {
+          this.competitionManager.initialize().then(() => {
+            this.renderCompetitions();
+            this.hideInitialLoading();
+          }).catch((e) => {
+            Utils.logError('pageshow.initialize', e);
+            this.hideInitialLoading();
+          });
+        } else {
+          this.hideInitialLoading();
+        }
+      } catch (e) {
+        Utils.logError('MainApp.pageshow', e);
+        this.hideInitialLoading();
+      }
+    });
+
     window.addEventListener('resize', Utils.throttle(() => {
       this.handleResize();
     }, 250));
@@ -154,7 +184,7 @@ async init() {
 
       // Check localStorage cache
       console.log('💾 Checking localStorage cache...');
-      this.showLoading('กำลังดาวโหลด รอสักครู่...');
+      this.showLoading('กำลังโหลดข้อมูล รอสักครู่...');
 
       if (this.competitionManager.dataService.loadFromLocalStorage()) {
         await this.competitionManager.initialize();
@@ -607,6 +637,9 @@ renderCertificateError(container, message) {
    * @param {boolean} showProgress - Show progress indicator
    */
   showLoading(message = 'กำลังโหลดข้อมูล...', showProgress = false) {
+    // Skip showing loaders when coming back from BFCache/back-forward
+    if (this._suppressLoaders) return;
+
     // Update loading overlay message
     const loadingText = document.querySelector('.loader-text');
     if (loadingText) {

@@ -403,6 +403,70 @@ async fetchCertificateLink() {
   }
 
   /**
+   * Refresh competitions from network without blocking UI
+   * Returns true if data changed and cache updated
+   */
+  async refreshFromNetwork() {
+    try {
+      const prev = GLOBAL_CACHE && GLOBAL_CACHE.competitions ? {
+        science: GLOBAL_CACHE.competitions.science || [],
+        gem: GLOBAL_CACHE.competitions.gem || []
+      } : { science: [], gem: [] };
+
+      const next = await this.fetchAllCompetitions();
+
+      const changed = this._hasCompetitionsChanged(prev, next);
+      if (changed) {
+        GLOBAL_CACHE.competitions = next;
+        GLOBAL_CACHE.lastUpdated = Date.now();
+        GLOBAL_CACHE.isLoaded = true;
+        this.saveToLocalStorage();
+        console.log('🔄 Cache updated from network');
+      } else {
+        console.log('ℹ️ No changes from network');
+      }
+      return changed;
+    } catch (error) {
+      Utils.logError('DataService.refreshFromNetwork', error);
+      return false;
+    }
+  }
+
+  /**
+   * Compare two competition snapshots (ids + counts) for changes
+   */
+  _hasCompetitionsChanged(prev, next) {
+    try {
+      const pSci = Array.isArray(prev.science) ? prev.science : [];
+      const pGem = Array.isArray(prev.gem) ? prev.gem : [];
+      const nSci = Array.isArray(next.science) ? next.science : [];
+      const nGem = Array.isArray(next.gem) ? next.gem : [];
+
+      if (pSci.length !== nSci.length || pGem.length !== nGem.length) return true;
+
+      const pSciIds = this._pluckIds(pSci).join('|');
+      const nSciIds = this._pluckIds(nSci).join('|');
+      if (pSciIds !== nSciIds) return true;
+
+      const pGemIds = this._pluckIds(pGem).join('|');
+      const nGemIds = this._pluckIds(nGem).join('|');
+      if (pGemIds !== nGemIds) return true;
+
+      return false;
+    } catch (e) {
+      // In doubt, assume changed to keep users up-to-date
+      return true;
+    }
+  }
+
+  _pluckIds(list) {
+    return (list || [])
+      .map(x => String(x.id ?? '').trim())
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b, 'th'));
+  }
+
+  /**
    * Fetch statistics data (legacy)
    * @returns {Promise<Array>} Statistics array
    */
