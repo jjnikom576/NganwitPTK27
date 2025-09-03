@@ -14,12 +14,16 @@ const GLOBAL_CACHE = {
 /**
  * Application Configuration
  */
+/**
+ * Application Configuration - Updated with Certificate API
+ */
 const CONFIG = {
   // ===== API Configuration =====
   API: {
     // Google Apps Script URLs (แยกกัน)
     SCIENCE_URL: 'https://script.google.com/macros/s/AKfycbxWyESyMxTu6WmnvF82xkdlEtUKeoacylcqXhBZv6f756BcYdzgosqk23SzkQoLRGP5PQ/exec',
     GEM_URL: 'https://script.google.com/macros/s/AKfycbwZ2OOojlO_f2CIlIZ9sejLlJWJlN1_7XXP787GT6K7iRN6v2181Hn-_Q4wWFXTN7aHRQ/exec',
+    CERTIFICATE_URL: 'https://script.google.com/macros/s/AKfycbxMuIPAr4GL0L3j6qyH75fl_pbeVGotmP2pALoi6w-xNZWXJRBsadJyt880NxMKgGJULA/exec', // ← ใส่ URL ใหม่
     
     // Legacy BASE_URL for backward compatibility
     BASE_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec',
@@ -28,11 +32,12 @@ const CONFIG = {
     ENDPOINTS: {
       COMPETITIONS: 'getCompetitions',
       RESULTS: 'getResults', 
-      STATISTICS: 'getStatistics'
+      STATISTICS: 'getStatistics',
+      CERTIFICATE: 'getCertificate'
     },
     
     // Request timeout (milliseconds)
-    TIMEOUT: 15000, // Longer timeout for sheets
+    TIMEOUT: 15000,
     
     // Retry configuration
     RETRY: {
@@ -169,6 +174,9 @@ const CONFIG = {
   MOCK: {
     ENABLED: false, // Set to false when connecting to real API
     DELAY: 800,    // Simulated API delay
+    
+    // Mock certificate URL - เพิ่มใหม่
+    CERTIFICATE_URL: 'https://www.canva.com/design/sample-certificate/edit',
     
     // Mock science competitions data
     SCIENCE_COMPETITIONS: [
@@ -338,7 +346,8 @@ const CONFIG = {
     INVALID_DATA: 'ข้อมูลไม่ถูกต้อง',
     COMPETITION_NOT_FOUND: 'ไม่พบการแข่งขันที่ต้องการ',
     SCIENCE_LOAD_FAILED: 'ไม่สามารถโหลดรายการการแข่งขันวิทยาศาสตร์ได้',
-    GEM_LOAD_FAILED: 'ไม่สามารถโหลดรายการการแข่งขันเจียระไนเพชรได้'
+    GEM_LOAD_FAILED: 'ไม่สามารถโหลดรายการการแข่งขันเจียระไนเพชรได้',
+    CERTIFICATE_LOAD_FAILED: 'ไม่สามารถโหลดลิงค์เกียรติบัตรได้'  // ← เพิ่มใหม่
   },
 
   // ===== Success Messages =====
@@ -348,7 +357,8 @@ const CONFIG = {
     SCIENCE_LOADED: 'โหลดรายการการแข่งขันวิทยาศาสตร์สำเร็จ',
     GEM_LOADED: 'โหลดรายการการแข่งขันเจียระไนเพชรสำเร็จ',
     CACHE_LOADED: 'โหลดข้อมูลสำเร็จ',
-    PRELOAD_COMPLETE: 'โหลดข้อมูลสำเร็จ'
+    PRELOAD_COMPLETE: 'โหลดข้อมูลสำเร็จ',
+    CERTIFICATE_LOADED: 'โหลดลิงค์เกียรติบัตรสำเร็จ'  // ← เพิ่มใหม่
   }
 };
 

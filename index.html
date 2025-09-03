@@ -87,6 +87,21 @@
 
     </main>
 
+      <!-- Certificate Section (วางก่อน statistics-section) -->
+    <section class="certificate-section" aria-labelledby="certificate-title">
+      <h3 id="certificate-title" class="certificate-title">🏆 เกียรติบัตรคณะกรรมการ</h3>
+      <p class="certificate-description">
+        เกียรติบัตรสำหรับคณะกรรมการ
+      </p>
+      
+      <!-- Certificate Download Container -->
+      <div id="certificate-container" class="certificate-container">
+        <div class="loading-placeholder" aria-hidden="true">
+          <div class="loading-text">กำลังโหลดลิงค์ดาวโหลด...</div>
+        </div>
+      </div>
+    </section>
+
     <!-- Statistics Section -->
     <section class="statistics-section" aria-labelledby="statistics-title">
       <h3 id="statistics-title" class="statistics-title">📊 สถิติการสมัครเข้าร่วมแข่งขัน</h3>
@@ -305,6 +320,96 @@
     .competition-item.clicked {
       transform: scale(0.98);
       transition: transform var(--duration-fast) var(--ease-in-out);
+    }
+
+    /* Certificate Section Styles */
+    .certificate-section {
+      margin: var(--spacing-8) 0;
+      padding: var(--spacing-6);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: var(--radius-xl);
+      color: var(--color-white);
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .certificate-title {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--spacing-4);
+    }
+
+    .certificate-description {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-6);
+      opacity: 0.9;
+    }
+
+    .certificate-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80px;
+    }
+
+    .certificate-button {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      padding: var(--spacing-4) var(--spacing-6);
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--color-white);
+      text-decoration: none;
+      border-radius: var(--radius-lg);
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-lg);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: all var(--duration-normal) var(--ease-out);
+    }
+
+    .certificate-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .certificate-button.clicked {
+      transform: scale(0.95);
+      transition: transform var(--duration-fast) var(--ease-in-out);
+    }
+
+    .certificate-icon {
+      font-size: 1.5em;
+    }
+
+    .certificate-error {
+      background: rgba(231, 76, 60, 0.2);
+      padding: var(--spacing-4) var(--spacing-6);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    .certificate-error-title {
+      font-weight: var(--font-weight-semibold);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .certificate-error-message {
+      opacity: 0.8;
+      font-size: var(--font-size-sm);
+    }
+
+    .certificate-loading {
+      background: rgba(255, 255, 255, 0.1);
+      padding: var(--spacing-4);
+      border-radius: var(--radius-lg);
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+    }
+
+    .certificate-loading .loading-text {
+      color: var(--color-white);
+      opacity: 0.8;
     }
 
     /* Notification styles */

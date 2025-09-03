@@ -13,6 +13,16 @@ class MainApp {
   }
 
   /**
+   * Bind DOM elements
+   */
+  bindElements() {
+    this.elements.loadingOverlay = document.getElementById('loading-overlay');
+    this.elements.scienceContainer = document.getElementById('science-competitions');
+    this.elements.academicContainer = document.getElementById('academic-competitions');
+    this.elements.certificateContainer = document.getElementById('certificate-container');
+  }
+
+  /**
    * Handle navigation clicks (competition items, etc.)
    * @param {Event} event - Click event
    */
@@ -63,39 +73,39 @@ class MainApp {
       Utils.showNotification('ไม่สามารถเปิดหน้าผลการแข่งขันได้', 'error');
     }
   }
+// ===== อัพเดตฟังก์ชัน init ของ MainApp class =====
 
-  /**
-   * Initialize the application
-   */
-  async init() {
-    try {
-      this.bindElements();
-      this.setupEventListeners();
-      await this.loadData();
-      this.isInitialized = true;
-    } catch (error) {
-      Utils.logError('MainApp.init', error);
-      this.showError(CONFIG.ERRORS.API_ERROR);
-    }
+/**
+ * Initialize the application - UPDATED
+ */
+async init() {
+  try {
+    this.bindElements();
+    this.setupEventListeners();
+    
+    // Load competition data first
+    await this.loadData();
+    
+    // Load certificate link (independent of competition data)
+    // Don't let certificate errors break the whole app
+    this.loadCertificate().catch(error => {
+      Utils.logError('MainApp.init', error, { section: 'certificate' });
+      // Silently handle certificate errors
+      const container = document.getElementById('certificate-container');
+      if (container) {
+        this.renderCertificateError(container, 'ไม่สามารถโหลดเกียรติบัตรได้');
+      }
+    });
+    
+    this.isInitialized = true;
+    
+    Utils.logInfo('MainApp', 'Application initialized successfully');
+    
+  } catch (error) {
+    Utils.logError('MainApp.init', error);
+    this.showError(CONFIG.ERRORS.API_ERROR);
   }
-
-  /**
-   * Bind DOM elements
-   */
-  bindElements() {
-    this.elements = {
-      // Containers
-      scienceContainer: Utils.getElementById('science-competitions'),
-      academicContainer: Utils.getElementById('academic-competitions'), // Maps to gem
-      statisticsSection: Utils.getElementById('statistics-section'),
-
-      // Loading elements
-      loadingOverlay: Utils.getElementById('loading-overlay'),
-
-      // Error elements
-      errorContainer: Utils.getElementById('error-container')
-    };
-  }
+}
 
   /**
    * Setup event listeners
@@ -144,7 +154,7 @@ class MainApp {
 
       // Check localStorage cache
       console.log('💾 Checking localStorage cache...');
-      this.showLoading('ตรวจสอบ cache ที่เก็บไว้...');
+      this.showLoading('กำลังดาวโหลด รอสักครู่...');
 
       if (this.competitionManager.dataService.loadFromLocalStorage()) {
         await this.competitionManager.initialize();
@@ -261,6 +271,89 @@ class MainApp {
     // Add refresh button if needed - NEW
     this.addRefreshButton();
   }
+
+  // ===== เพิ่ม methods เหล่านี้ใน MainApp class ใน main.js =====
+
+/**
+ * Load certificate download link from API
+ */
+async loadCertificate() {
+  const container = document.getElementById('certificate-container');
+  if (!container) return;
+
+  try {
+    // Show loading state
+    container.innerHTML = `
+      <div class="loading-placeholder certificate-loading" aria-hidden="true">
+        <div class="loading-text">กำลังโหลดลิงค์ดาวโหลด...</div>
+      </div>
+    `;
+
+    // Fetch certificate link from API
+    const certificateUrl = await this.competitionManager.dataService.fetchCertificateLink();
+
+    if (certificateUrl && certificateUrl.trim() !== '') {
+      this.renderCertificateButton(container, certificateUrl);
+      Utils.logInfo('Certificate', 'Certificate loaded successfully');
+    } else {
+      this.renderCertificateError(container, 'ยังไม่มีเกียรติบัตรให้ดาวโหลด');
+    }
+
+  } catch (error) {
+    Utils.logError('MainApp.loadCertificate', error);
+    this.renderCertificateError(container, 'ไม่สามารถโหลดลิงค์ดาวโหลดได้');
+  }
+}
+
+/**
+ * Render certificate download button
+ */
+renderCertificateButton(container, url) {
+  container.innerHTML = `
+    <a href="${Utils.escapeHTML(url)}" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="certificate-button"
+       aria-label="ดาวโหลดเกียรติบัตรคณะกรรมการ">
+      <span class="certificate-icon">📥</span>
+      <span>ดาวโหลดเกียรติบัตร</span>
+    </a>
+  `;
+
+  // Add click tracking
+  const button = container.querySelector('.certificate-button');
+  if (button) {
+    button.addEventListener('click', () => {
+      // Add visual feedback
+      Utils.addClass(button, 'clicked');
+      setTimeout(() => {
+        Utils.removeClass(button, 'clicked');
+      }, 200);
+
+      // Track download if analytics available
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'certificate_download', {
+          event_category: 'engagement',
+          event_label: 'committee_certificate'
+        });
+      }
+      
+      Utils.logInfo('Certificate', 'Committee certificate downloaded', { url });
+    });
+  }
+}
+
+/**
+ * Render certificate error state
+ */
+renderCertificateError(container, message) {
+  container.innerHTML = `
+    <div class="certificate-error" role="alert">
+      <div class="certificate-error-title">เกียรติบัตรไม่พร้อมใช้งาน</div>
+      <div class="certificate-error-message">${Utils.escapeHTML(message)}</div>
+    </div>
+  `;
+}
 
   /**
    * Add refresh button to the page - NEW

@@ -96,6 +96,41 @@ class DataService {
   }
 
   /**
+ * Fetch certificate download link from API
+ * @returns {Promise<string>} Certificate download URL
+ */
+async fetchCertificateLink() {
+  try {
+    // Use dedicated certificate API endpoint
+    const url = CONFIG.API.CERTIFICATE_URL;
+    const params = { action: CONFIG.API.ENDPOINTS.CERTIFICATE };
+    
+    if (CONFIG.MOCK.ENABLED) {
+      // Return mock URL for development
+      await Utils.sleep(1000);
+      return CONFIG.MOCK.CERTIFICATE_URL;
+    }
+    
+    const response = await this.simpleJSONP(url, params);
+    
+    // Response should be a string URL or object with data property
+    if (typeof response === 'string') {
+      return response.trim();
+    } else if (response && response.data) {
+      return response.data.trim();
+    } else if (response && response.url) {
+      return response.url.trim();
+    } else {
+      throw new Error('Invalid certificate URL format in API response');
+    }
+    
+  } catch (error) {
+    Utils.logError('DataService.fetchCertificateLink', error);
+    throw new Error(CONFIG.ERRORS.CERTIFICATE_LOAD_FAILED);
+  }
+}
+
+  /**
    * Save cache to localStorage - NEW
    */
   saveToLocalStorage() {
