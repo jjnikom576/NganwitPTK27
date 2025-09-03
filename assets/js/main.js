@@ -852,3 +852,4 @@ if (isDevelopment()) {
 
   console.log('🔧 Development mode active. Available commands:', Object.keys(window.debugCommands));
 }
+

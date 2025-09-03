@@ -247,7 +247,7 @@ class ResultsApp {
    */
   createTableBody() {
     const tbody = Utils.createElement('tbody');
-    const levelOrder = ['ประถมศึกษา', 'มัธยมศึกษาตอนต้น', 'มัธยมศึกษาตอนปลาย', 'ทั่วไป', ''];
+    const levelOrder = ['ประถมศึกษาปีที่ 1 - 3','ประถมศึกษาปีที่ 4 - 6','ประถมศึกษา', 'มัธยมศึกษาตอนต้น', 'มัธยมศึกษาตอนปลาย', 'ทั่วไป', ''];
 
     const toIndex = (lvl) => {
       const key = normalizeLevelKey(lvl);
@@ -804,7 +804,7 @@ if (typeof module !== 'undefined' && module.exports) {
 function normalizeLevelKey(raw) {
   const s = (raw ?? '').toString().trim();
   const map = {
-    'ประถม': 'ประถมศึกษา',
+    'ประถม': '',
     'ประถมศึกษา': 'ประถมศึกษา',
     'มัธยมต้น': 'มัธยมศึกษาตอนต้น',
     'มัธยมศึกษาตอนต้น': 'มัธยมศึกษาตอนต้น',
